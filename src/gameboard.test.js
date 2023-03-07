@@ -1,7 +1,6 @@
 /* eslint-disable no-undef */
 /* eslint-disable no-unused-vars */
 import gameboard from "./gameboard";
-import ship from "./ship";
 
 let gb1;
 beforeEach(() => {
@@ -79,11 +78,6 @@ test("placeShip: vertical", () => {
       name: "destroyer",
     })
   );
-  expect(gb1.board.c[4].owner).toEqual(
-    expect.objectContaining({
-      name: "destroyer",
-    })
-  );
 });
 
 test("placeShip: horizontal", () => {
@@ -140,5 +134,40 @@ test("placeShip: horizontal", () => {
       name: "submarine",
     })
   );
-  console.log(gb1.board);
+});
+
+test("recieveAttack: board recieves hit and state of hit", () => {
+  gb1.placeShip(gb1.ships.carrier, "a", 10, "horizontal");
+  gb1.placeShip(gb1.ships.destroyer, "c", 1, "vertical");
+  gb1.recieveAttack("c", 3);
+  gb1.recieveAttack("c", 5);
+  expect(gb1.ships.destroyer.nHits).toBe(1);
+  expect(gb1.board.c[3].hit).toBe(1);
+  expect(gb1.board.c[5].hit).toBe(0);
+});
+
+test("reportSunk: checks correctly for sunk status", () => {
+  gb1.placeShip(gb1.ships.carrier, "a", 4, "horizontal");
+  gb1.recieveAttack("a", 4);
+  gb1.recieveAttack("b", 4);
+  gb1.recieveAttack("c", 4);
+  gb1.recieveAttack("d", 4);
+  gb1.recieveAttack("e", 4);
+  gb1.placeShip(gb1.ships.battleship, "f", 9, "vertical");
+  gb1.recieveAttack("f", 9);
+  gb1.recieveAttack("f", 8);
+  gb1.recieveAttack("f", 7);
+  gb1.recieveAttack("f", 6);
+  gb1.placeShip(gb1.ships.destroyer, "i", 4, "vertical");
+  gb1.recieveAttack("i", 4);
+  gb1.recieveAttack("i", 3);
+  gb1.recieveAttack("i", 2);
+  gb1.placeShip(gb1.ships.submarine, "i", 10, "vertical");
+  gb1.recieveAttack("i", 10);
+  gb1.recieveAttack("i", 9);
+  gb1.recieveAttack("i", 8);
+  gb1.placeShip(gb1.ships.patrol, "b", 8, "horizontal");
+  gb1.recieveAttack("b", 8);
+  gb1.recieveAttack("c", 8);
+  expect(gb1.reportSunk()).toBe(true);
 });
