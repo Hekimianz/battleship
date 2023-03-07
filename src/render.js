@@ -5,7 +5,7 @@ const renderer = {
     this.wrapper = document.createElement("div");
     this.wrapper.setAttribute("id", "wrapper");
     document.body.appendChild(this.wrapper);
-    this.gamePage();
+    this.homePage();
   },
   gamePage() {
     this.boardsWrap = document.createElement("div");
@@ -61,6 +61,7 @@ const renderer = {
     this.header.innerText = "Battleship";
     this.playBtn = document.createElement("button");
     this.playBtn.innerText = "Play";
+    this.playBtn.classList.add("playBtn");
     this.playBtn.addEventListener("click", () => {
       this.clearPage();
       this.gamePage();
