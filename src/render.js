@@ -23,6 +23,7 @@ const renderer = {
     this.wrapper.appendChild(this.boardsWrap);
     this.boardsWrap.append(this.board1, this.board2);
     this.allCells = document.getElementsByClassName("player1");
+    this.allCellsP2 = document.getElementsByClassName("player2");
   },
   createGrid(board, playerNum = 1) {
     const cols =
@@ -72,17 +73,20 @@ const renderer = {
     this.logo.id = "logoImg";
     this.header = document.createElement("h1");
     this.header.innerText = "Battleship";
+    this.userName = document.createElement("input");
+    this.userName.id = "userName";
+    this.userName.placeholder = "Your name:";
     this.playBtn = document.createElement("button");
     this.playBtn.innerText = "Play";
     this.playBtn.classList.add("playBtn");
     this.playBtn.addEventListener("click", () => {
       this.clearPage();
       this.gamePage();
-      this.gameLoop.startGame();
+      this.gameLoop.startGame(this.userName.value);
       this.renderBoard(this.gameLoop.player1);
-      this.renderBoard(this.gameLoop.player2);
+      this.attack();
     });
-    this.wrapper.append(this.logo, this.header, this.playBtn);
+    this.wrapper.append(this.logo, this.header, this.userName, this.playBtn);
   },
   clearPage() {
     while (this.wrapper.firstChild) {
@@ -102,6 +106,16 @@ const renderer = {
             }
           }
         }
+      }
+    }
+    this.allCells = document.getElementsByClassName("player1");
+  },
+  renderAttacks(player) {
+    if (player === this.gameLoop.player2) {
+      this.allCells = document.getElementsByClassName("player2");
+    }
+    for (const col in player.board.board) {
+      for (const row in player.board.board[col]) {
         if (player.board.board[col][row].hit !== null) {
           if (player.board.board[col][row].hit === 0) {
             for (let i = 0; i < this.allCells.length; i += 1) {
@@ -120,6 +134,59 @@ const renderer = {
         }
       }
     }
+    this.allCells = document.getElementsByClassName("player1");
+  },
+  attack() {
+    for (let i = 0; i < this.allCellsP2.length; i += 1) {
+      this.allCellsP2[i].addEventListener("click", this.attackEvent.bind(this));
+    }
+  },
+  attackEvent(e) {
+    this.gameLoop.player2.board.recieveAttack(
+      e.target.dataset.col,
+      e.target.dataset.row
+    );
+    this.renderAttacks(this.gameLoop.player2);
+    if (
+      this.checkGameOver(this.gameLoop.player2, this.gameLoop.player1) === false
+    ) {
+      setTimeout(() => {
+        this.gameLoop.player1.recieveRandomAttack();
+        this.renderAttacks(this.gameLoop.player1);
+        this.renderBoard(this.gameLoop.player2);
+        this.checkGameOver(this.gameLoop.player1, this.gameLoop.player2);
+      }, 300);
+    }
+  },
+  checkGameOver(player, otherPlayer) {
+    if (player.board.reportSunk() === false) {
+      return false;
+    }
+    this.winner = otherPlayer.name;
+    for (let i = 0; i < this.allCellsP2.length; i += 1) {
+      this.allCellsP2[i].style.pointerEvents = "none";
+    }
+    this.gameOverScreen();
+    return true;
+  },
+  gameOverScreen() {
+    this.gameOverWrap = document.createElement("div");
+    this.gameOverWrap.id = "gameOverWrap";
+    this.gameOverSpan = document.createElement("span");
+    this.gameOverSpan.innerText = `${this.winner} Wins!`;
+    this.gameOverSpan.id = "gameOverText";
+    this.restartGame = document.createElement("button");
+    this.restartGame.innerText = "Play again";
+    this.restartGame.addEventListener("click", () => {
+      this.gameOverWrap.style.display = "none";
+      this.clearPage();
+      this.gamePage();
+      this.gameLoop.startGame(this.userName.value);
+      this.renderBoard(this.gameLoop.player1);
+      this.attack();
+    });
+    document.body.appendChild(this.gameOverWrap);
+    this.gameOverWrap.append(this.gameOverSpan, this.restartGame);
   },
 };
 

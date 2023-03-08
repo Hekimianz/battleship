@@ -193,6 +193,11 @@ h1 {
   height: 3.5em;
   margin-bottom: 10px;
 }
+#userName {
+  width: 100px;
+  font-size: 16px;
+  margin-bottom: 20px;
+}
 
 .playBtn {
   background-color: initial;
@@ -216,4 +221,25 @@ h1 {
 
 .playBtn:hover {
   background: #346b06;
+}
+
+#gameOverWrap {
+  width: 200px;
+  height: 100px;
+  position: absolute;
+  background-color: #62c611;
+  border: 2px solid #c70824;
+  top: 0;
+  left: 0;
+  right: 0;
+  margin: auto auto auto auto;
+  border-radius: 5px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+#gameOverText {
+  font-size: 1.5em;
 }

@@ -2,12 +2,12 @@ import player from "./player";
 
 function game() {
   return {
-    createPlayers() {
-      this.player1 = player("aram");
+    createPlayers(playerName) {
+      this.player1 = player(playerName);
       this.player2 = player();
     },
-    startGame() {
-      this.createPlayers();
+    startGame(playerName) {
+      this.createPlayers(playerName);
       this.placeShips(this.player1);
       this.placeShips(this.player2);
     },

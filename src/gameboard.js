@@ -183,9 +183,10 @@ function gameboard() {
         this.ships.patrol.isSunk() === true
       ) {
         this.allSunk = true;
-        return this.allSunk;
+        return true;
       }
-      return this.allSunk;
+
+      return false;
     },
   };
 }
