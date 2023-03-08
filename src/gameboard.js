@@ -170,9 +170,10 @@ function gameboard() {
       if (attackedCell.owner !== null) {
         attackedCell.owner.hit();
         attackedCell.hit = 1;
-      } else {
-        attackedCell.hit = 0;
+        return true;
       }
+      attackedCell.hit = 0;
+      return false;
     },
     reportSunk() {
       if (

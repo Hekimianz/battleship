@@ -14,12 +14,16 @@ function player(name = "cpu") {
     randomRow() {
       return this.randomNum() + 1;
     },
+
     recieveRandomAttack(col = this.randomCol(), row = this.randomRow()) {
       if (this.board.board[col][row].hit === null) {
-        this.board.recieveAttack(col, row);
+        if (this.board.recieveAttack(col, row) === true) {
+          return true;
+        }
       } else {
         this.recieveRandomAttack();
       }
+      return false;
     },
   };
 }

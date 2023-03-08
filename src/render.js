@@ -20,7 +20,7 @@ const renderer = {
     this.board2.setAttribute("id", "board2");
     this.createGrid(this.board1);
     this.createGrid(this.board2, 2);
-    this.wrapper.appendChild(this.boardsWrap);
+    this.wrapper.append(this.boardsWrap);
     this.boardsWrap.append(this.board1, this.board2);
     this.allCells = document.getElementsByClassName("player1");
     this.allCellsP2 = document.getElementsByClassName("player2");
@@ -141,6 +141,7 @@ const renderer = {
       this.allCellsP2[i].addEventListener("click", this.attackEvent.bind(this));
     }
   },
+
   attackEvent(e) {
     this.gameLoop.player2.board.recieveAttack(
       e.target.dataset.col,
@@ -152,8 +153,8 @@ const renderer = {
     ) {
       setTimeout(() => {
         this.gameLoop.player1.recieveRandomAttack();
+
         this.renderAttacks(this.gameLoop.player1);
-        this.renderBoard(this.gameLoop.player2);
         this.checkGameOver(this.gameLoop.player1, this.gameLoop.player2);
       }, 300);
     }
