@@ -14,7 +14,7 @@ function player(name = "cpu") {
     randomRow() {
       return this.randomNum() + 1;
     },
-    recieveRandomAttack(col = this.randomCol, row = this.randomRow) {
+    recieveRandomAttack(col = this.randomCol(), row = this.randomRow()) {
       if (this.board.board[col][row].hit === null) {
         this.board.recieveAttack(col, row);
       } else {

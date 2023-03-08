@@ -138,7 +138,7 @@ html,
 body {
   width: 100%;
   height: 100%;
-  background-color: black;
+  background-color: rgb(32, 32, 32);
   color: #daffba;
 }
 
@@ -160,6 +160,7 @@ h1 {
 
 #board1,
 #board2 {
+  box-sizing: border-box;
   width: 300px;
   height: 300px;
   display: flex;
@@ -167,12 +168,20 @@ h1 {
   flex-wrap: wrap;
 }
 
-.cell {
-  width: 25px;
+.player1,
+.player2 {
+  transition: 0.3s all;
+  box-sizing: border-box;
+  width: 27px;
   border: 1px solid #61c611;
 }
 
+#player2 {
+  cursor: pointer;
+}
+
 .col {
+  box-sizing: border-box;
   width: 27px;
   display: flex;
   justify-content: center;

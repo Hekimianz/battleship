@@ -1,6 +1,10 @@
+/* eslint-disable guard-for-in */
+/* eslint-disable no-restricted-syntax */
 import logoImg from "./assets/logo.svg";
+import game from "./game";
 
 const renderer = {
+  gameLoop: game(),
   init() {
     this.wrapper = document.createElement("div");
     this.wrapper.setAttribute("id", "wrapper");
@@ -15,14 +19,16 @@ const renderer = {
     this.board2 = document.createElement("div");
     this.board2.setAttribute("id", "board2");
     this.createGrid(this.board1);
-    this.createGrid(this.board2);
-
+    this.createGrid(this.board2, 2);
     this.wrapper.appendChild(this.boardsWrap);
     this.boardsWrap.append(this.board1, this.board2);
+    this.allCells = document.getElementsByClassName("player1");
   },
-  createGrid(board) {
-    const cols = "-abcdefghij";
+  createGrid(board, playerNum = 1) {
+    const cols =
+      "-abcdefghij-abcdefghij-abcdefghij-abcdefghij-abcdefghij-abcdefghij-abcdefghij-abcdefghij-abcdefghij-abcdefghij-abcdefghij";
     const rows = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
+
     for (let i = 1; i < 122; i += 1) {
       this.cell = document.createElement("div");
       if (i === 1) {
@@ -47,7 +53,14 @@ const renderer = {
         this.cell.innerText = rows[0];
         rows.shift();
       } else {
-        this.cell.classList.add("cell");
+        this.cell.classList.add(`player${playerNum}`);
+        this.cell.dataset.col = cols.charAt(i - 1);
+        if (rows[0] !== undefined) {
+          this.cell.dataset.row = rows[0] - 1;
+        } else {
+          this.cell.dataset.row = 10;
+        }
+        this.cell.dataset.coords = `${this.cell.dataset.col} ${this.cell.dataset.row}`;
       }
 
       board.appendChild(this.cell);
@@ -65,12 +78,47 @@ const renderer = {
     this.playBtn.addEventListener("click", () => {
       this.clearPage();
       this.gamePage();
+      this.gameLoop.startGame();
+      this.renderBoard(this.gameLoop.player1);
+      this.renderBoard(this.gameLoop.player2);
     });
     this.wrapper.append(this.logo, this.header, this.playBtn);
   },
   clearPage() {
     while (this.wrapper.firstChild) {
       this.wrapper.removeChild(this.wrapper.lastChild);
+    }
+  },
+  renderBoard(player) {
+    if (player === this.gameLoop.player2) {
+      this.allCells = document.getElementsByClassName("player2");
+    }
+    for (const col in player.board.board) {
+      for (const row in player.board.board[col]) {
+        if (player.board.board[col][row].owner !== null) {
+          for (let i = 0; i < this.allCells.length; i += 1) {
+            if (this.allCells[i].dataset.coords === `${col} ${row}`) {
+              this.allCells[i].style.backgroundColor = "#1EDE09";
+            }
+          }
+        }
+        if (player.board.board[col][row].hit !== null) {
+          if (player.board.board[col][row].hit === 0) {
+            for (let i = 0; i < this.allCells.length; i += 1) {
+              if (this.allCells[i].dataset.coords === `${col} ${row}`) {
+                this.allCells[i].style.backgroundColor = "#EAFF08";
+              }
+            }
+          } else if (player.board.board[col][row].hit === 1) {
+            for (let i = 0; i < this.allCells.length; i += 1) {
+              if (this.allCells[i].dataset.coords === `${col} ${row}`) {
+                this.allCells[i].style.backgroundColor = "#C70824";
+                this.allCells[i].style.borderWidth = "3px";
+              }
+            }
+          }
+        }
+      }
     }
   },
 };
