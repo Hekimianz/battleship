@@ -8,7 +8,7 @@ function game() {
     },
     startGame(playerName) {
       this.createPlayers(playerName);
-      this.placeShips(this.player1);
+      // this.placeShips(this.player1);
       this.placeShips(this.player2);
     },
     // eslint-disable-next-line no-shadow

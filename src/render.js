@@ -18,12 +18,28 @@ const renderer = {
     this.board1.setAttribute("id", "board1");
     this.board2 = document.createElement("div");
     this.board2.setAttribute("id", "board2");
+    this.startGameBtn = document.createElement("button");
+    this.startGameBtn.innerText = "Start Game";
+    this.startGameBtn.id = "startGameBtn";
     this.createGrid(this.board1);
     this.createGrid(this.board2, 2);
-    this.wrapper.append(this.boardsWrap);
-    this.boardsWrap.append(this.board1, this.board2);
+    this.flipShip = document.createElement("button");
+    this.flipShip.innerText = "Flip Ship";
+    this.wrapper.append(this.boardsWrap, this.startGameBtn);
+    this.boardsWrap.append(this.board1, this.flipShip, this.board2);
     this.allCells = document.getElementsByClassName("player1");
     this.allCellsP2 = document.getElementsByClassName("player2");
+    this.startGameBtn.addEventListener("click", () => {
+      this.startGameBtn.style.display = "none";
+      this.attack();
+    });
+    this.flipShip.addEventListener("click", () => {
+      if (this.orientation === "horizontal") {
+        this.orientation = "vertical";
+      } else {
+        this.orientation = "horizontal";
+      }
+    });
   },
   createGrid(board, playerNum = 1) {
     const cols =
@@ -82,9 +98,10 @@ const renderer = {
     this.playBtn.addEventListener("click", () => {
       this.clearPage();
       this.gamePage();
+
       this.gameLoop.startGame(this.userName.value);
       this.renderBoard(this.gameLoop.player1);
-      this.attack();
+      this.placement();
     });
     this.wrapper.append(this.logo, this.header, this.userName, this.playBtn);
   },
@@ -103,6 +120,12 @@ const renderer = {
           for (let i = 0; i < this.allCells.length; i += 1) {
             if (this.allCells[i].dataset.coords === `${col} ${row}`) {
               this.allCells[i].style.backgroundColor = "#1EDE09";
+            }
+          }
+        } else {
+          for (let i = 0; i < this.allCells.length; i += 1) {
+            if (this.allCells[i].dataset.coords === `${col} ${row}`) {
+              this.allCells[i].style.backgroundColor = "transparent";
             }
           }
         }
@@ -188,6 +211,58 @@ const renderer = {
     });
     document.body.appendChild(this.gameOverWrap);
     this.gameOverWrap.append(this.gameOverSpan, this.restartGame);
+  },
+  orientation: "vertical",
+  placement() {
+    for (let i = 0; i < this.allCells.length; i += 1) {
+      this.allCells[i].addEventListener("click", (e) => {
+        const { col } = e.target.dataset;
+        const row = Number(e.target.dataset.row);
+        if (this.gameLoop.player1.board.ships.carrier.placed !== true) {
+          this.gameLoop.player1.board.placeShip(
+            this.gameLoop.player1.board.ships.carrier,
+            col,
+            row,
+            this.orientation
+          );
+        } else if (
+          this.gameLoop.player1.board.ships.battleship.placed !== true
+        ) {
+          this.gameLoop.player1.board.placeShip(
+            this.gameLoop.player1.board.ships.battleship,
+            col,
+            row,
+            this.orientation
+          );
+        } else if (
+          this.gameLoop.player1.board.ships.destroyer.placed !== true
+        ) {
+          this.gameLoop.player1.board.placeShip(
+            this.gameLoop.player1.board.ships.destroyer,
+            col,
+            row,
+            this.orientation
+          );
+        } else if (
+          this.gameLoop.player1.board.ships.submarine.placed !== true
+        ) {
+          this.gameLoop.player1.board.placeShip(
+            this.gameLoop.player1.board.ships.submarine,
+            col,
+            row,
+            this.orientation
+          );
+        } else if (this.gameLoop.player1.board.ships.patrol.placed !== true) {
+          this.gameLoop.player1.board.placeShip(
+            this.gameLoop.player1.board.ships.patrol,
+            col,
+            row,
+            this.orientation
+          );
+        }
+        this.renderBoard(this.gameLoop.player1);
+      });
+    }
   },
 };
 

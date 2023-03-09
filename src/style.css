@@ -158,6 +158,13 @@ h1 {
   color: white;
 }
 
+#boardsWrap {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
 #board1,
 #board2 {
   box-sizing: border-box;
@@ -238,8 +245,13 @@ h1 {
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  margin-left: 27px;
 }
 
 #gameOverText {
   font-size: 1.5em;
+}
+
+#startGameBtn {
+  margin-left: 27px;
 }

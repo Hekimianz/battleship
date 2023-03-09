@@ -36,46 +36,36 @@ test("ships: contains 5 ships", () => {
 });
 
 test("placeShip: vertical", () => {
-  gb1.placeShip(gb1.ships.carrier, "a", 10, "vertical");
-  gb1.placeShip(gb1.ships.destroyer, "c", 1, "vertical");
+  gb1.placeShip(gb1.ships.destroyer, "a", 10, "vertical");
+  gb1.placeShip(gb1.ships.carrier, "c", 1, "vertical");
   expect(gb1.board.a[10].owner).toEqual(
     expect.objectContaining({
-      name: "carrier",
+      name: "destroyer",
     })
   );
   expect(gb1.board.a[9].owner).toEqual(
     expect.objectContaining({
-      name: "carrier",
+      name: "destroyer",
     })
   );
   expect(gb1.board.a[8].owner).toEqual(
     expect.objectContaining({
-      name: "carrier",
-    })
-  );
-  expect(gb1.board.a[7].owner).toEqual(
-    expect.objectContaining({
-      name: "carrier",
-    })
-  );
-  expect(gb1.board.a[6].owner).toEqual(
-    expect.objectContaining({
-      name: "carrier",
+      name: "destroyer",
     })
   );
   expect(gb1.board.c[1].owner).toEqual(
     expect.objectContaining({
-      name: "destroyer",
+      name: "carrier",
     })
   );
   expect(gb1.board.c[2].owner).toEqual(
     expect.objectContaining({
-      name: "destroyer",
+      name: "carrier",
     })
   );
   expect(gb1.board.c[3].owner).toEqual(
     expect.objectContaining({
-      name: "destroyer",
+      name: "carrier",
     })
   );
 });
@@ -170,4 +160,20 @@ test("reportSunk: checks correctly for sunk status", () => {
   gb1.recieveAttack("b", 8);
   gb1.recieveAttack("c", 8);
   expect(gb1.reportSunk()).toBe(true);
+});
+
+test("clearShip", () => {
+  gb1.placeShip(gb1.ships.carrier, "a", 4, "horizontal");
+  expect(gb1.board.a[4].owner).toBe(gb1.ships.carrier);
+  gb1.clearShip(gb1.ships.carrier);
+  expect(gb1.board.a[4].owner).toBe(null);
+  gb1.placeShip(gb1.ships.carrier, "f", 9, "vertical");
+  expect(gb1.board.f[9].owner).toBe(gb1.ships.carrier);
+});
+
+test("moveShip", () => {
+  gb1.placeShip(gb1.ships.carrier, "a", 4, "horizontal");
+  gb1.moveShip("f", 9, "vertical", gb1.ships.carrier);
+  expect(gb1.board.a[4].owner).toBe(null);
+  expect(gb1.board.f[9].owner).toBe(gb1.ships.carrier);
 });

@@ -1,3 +1,5 @@
+/* eslint-disable guard-for-in */
+/* eslint-disable no-restricted-syntax */
 import shipFac from "./ship";
 
 function gameboard() {
@@ -133,37 +135,51 @@ function gameboard() {
     },
     allSunk: false,
     placeShip(ship, col, row, orientation) {
-      this.board[col][row].owner = ship;
-      const cols = "abcdefghij";
-      // vertical
-      if (orientation === "vertical") {
-        for (let i = 0; i < ship.length; i += 1) {
-          // to the top
-          if (this.board[col][row - ship.length] !== undefined) {
-            this.board[col][row - i].owner = ship;
-            // to the bottom
-          } else if (this.board[col][row + ship.length] !== undefined) {
-            this.board[col][row + i].owner = ship;
-          } else {
-            throw new Error("Something went wrong!");
+      if (this.board[col][row].owner === null) {
+        // eslint-disable-next-line no-param-reassign
+        ship.placed = true;
+        const cols = "abcdefghij";
+        // vertical
+        if (orientation === "vertical") {
+          for (let i = 0; i < ship.length; i += 1) {
+            this.board[col][row].owner = ship;
+            // to the top
+            if (this.board[col][row - ship.length] !== undefined) {
+              this.board[col][row - i].owner = ship;
+
+              // to the bottom
+            } else if (this.board[col][row + ship.length] !== undefined) {
+              this.board[col][row + i].owner = ship;
+            }
+          }
+        }
+        // horizontal
+        if (orientation === "horizontal") {
+          for (let i = 0; i < ship.length; i += 1) {
+            const currentIndex = cols.indexOf(col);
+            // to the right
+            if (cols.charAt(currentIndex + ship.length) !== "") {
+              this.board[cols.charAt(currentIndex + i)][row].owner = ship;
+              // to the left
+            } else if (cols.charAt(currentIndex - ship.length) !== "") {
+              this.board[cols.charAt(currentIndex - i)][row].owner = ship;
+            }
           }
         }
       }
-      // horizontal
-      if (orientation === "horizontal") {
-        for (let i = 0; i < ship.length; i += 1) {
-          const currentIndex = cols.indexOf(col);
-          // to the right
-          if (cols.charAt(currentIndex + ship.length) !== "") {
-            this.board[cols.charAt(currentIndex + i)][row].owner = ship;
-            // to the left
-          } else if (cols.charAt(currentIndex - ship.length) !== "") {
-            this.board[cols.charAt(currentIndex - i)][row].owner = ship;
-          } else {
-            throw new Error("Something went wrong!");
+    },
+    clearShip(ship) {
+      for (const col in this.board) {
+        for (const row in this.board[col]) {
+          if (this.board[col][row].owner === ship) {
+            this.board[col][row].owner = null;
           }
         }
       }
+    },
+    moveShip(col, row, orientation, ship) {
+      this.clearShip(ship);
+      this.placeShip(ship, col, row, orientation);
     },
     recieveAttack(col, row) {
       const attackedCell = this.board[col][row];
