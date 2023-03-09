@@ -153,9 +153,10 @@ body {
 
 h1 {
   margin-bottom: 30px;
-  font-size: 4em;
+  font-size: 3.5em;
   font-weight: bold;
   color: white;
+  font-family: "Roboto Mono", monospace;
 }
 
 #boardsWrap {
@@ -183,8 +184,16 @@ h1 {
   border: 1px solid #61c611;
 }
 
-#player2 {
+.player2 {
   cursor: pointer;
+}
+
+.player1:hover {
+  cursor: pointer;
+}
+
+.player2:hover {
+  background-color: #336b0687;
 }
 
 .col {
@@ -193,6 +202,7 @@ h1 {
   display: flex;
   justify-content: center;
   align-items: center;
+  font-family: "Roboto Mono", monospace;
 }
 
 #logoImg {
@@ -231,21 +241,24 @@ h1 {
 }
 
 #gameOverWrap {
-  width: 200px;
-  height: 100px;
+  width: 300px;
+  height: 30px;
   position: absolute;
-  background-color: #62c611;
-  border: 2px solid #c70824;
-  top: 0;
-  left: 0;
-  right: 0;
-  margin: auto auto auto auto;
+  background-color: black;
+  border: 3px solid green;
   border-radius: 5px;
+  color: #daffba;
+  padding: 25px 10px;
   display: flex;
   flex-direction: column;
+  top: 0;
+  right: 0;
+  left: 0;
+  bottom: 0;
+  margin: auto;
+  align-items: flex-start;
   justify-content: center;
   align-items: center;
-  margin-left: 27px;
 }
 
 #gameOverText {
@@ -274,17 +287,40 @@ h1 {
   text-align: center;
   width: 130px;
   border: 0;
-  font-size: 1em;
+  font-size: 0.8em;
+  font-family: "Roboto Mono", monospace;
 }
 
 #startGameBtn:hover {
   background: #346b06;
 }
 
+.restartBtn {
+  background-color: initial;
+  background-image: linear-gradient(-180deg, #61c611, #346b06);
+  border-radius: 5px;
+  box-shadow: rgba(0, 0, 0, 0.1) 0 2px 4px;
+  color: #ffffff;
+  cursor: pointer;
+  display: inline-block;
+  height: 22px;
+  outline: 0;
+  pointer-events: auto;
+  position: relative;
+  text-align: center;
+  width: 100px;
+  border: 0;
+  font-size: 1em;
+  margin-top: 10px;
+}
+.restartBtn:hover {
+  background: #346b06;
+}
+
 #flipShip {
   position: absolute;
   top: 0;
-  width: 20px;
+  width: 30px;
   filter: invert(53%) sepia(80%) saturate(463%) hue-rotate(50deg)
     brightness(103%) contrast(101%);
   cursor: pointer;
@@ -298,4 +334,88 @@ h1 {
 
 #flipShip:active {
   transition: none;
+}
+
+#infoWrap {
+  width: 300px;
+  height: 30px;
+  position: absolute;
+  background-color: black;
+  border: 3px solid green;
+  border-radius: 5px;
+  color: #daffba;
+  padding: 20px 10px;
+  display: flex;
+  flex-direction: column;
+  top: 0;
+  bottom: 0;
+  margin: auto 0;
+  margin-left: 13.5px;
+  margin-bottom: 150px;
+  font-family: "Roboto Mono", monospace;
+  align-items: flex-start;
+  font-size: 0.7em;
+}
+
+@media screen and (min-width: 1200px) {
+  #boardsWrap {
+    flex-direction: row;
+    gap: 100px;
+  }
+
+  #logoImg {
+    margin: 0;
+  }
+  #wrapper {
+    justify-content: center;
+  }
+
+  #board1,
+  #board2 {
+    width: 500px;
+    height: 500px;
+  }
+
+  #infoWrap {
+    margin: 50px auto auto auto;
+    height: 40px;
+    font-size: 0.8em;
+    width: 400px;
+  }
+
+  /* #gameOverWrap {
+    width: 300px;
+    height: 30px;
+    position: absolute;
+    background-color: black;
+    border: 3px solid green;
+    border-radius: 5px;
+    color: #daffba;
+    padding: 25px 10px;
+    display: flex;
+    flex-direction: column;
+    top: 0;
+    right: 0;
+    left: 0;
+    bottom: 0;
+    margin: auto;
+    align-items: flex-start;
+    justify-content: center;
+    align-items: center;
+  } */
+  #gameOverWrap {
+    padding: 50px 20px;
+    font-family: "Roboto Mono", monospace;
+  }
+
+  #startGameBtn {
+    height: 40px;
+    font-size: 0.8em;
+  }
+
+  .col,
+  .player1,
+  .player2 {
+    width: 9%;
+  }
 }

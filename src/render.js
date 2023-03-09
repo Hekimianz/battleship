@@ -12,6 +12,7 @@ const renderer = {
     document.body.appendChild(this.wrapper);
     this.homePage();
   },
+
   gamePage() {
     this.boardsWrap = document.createElement("div");
     this.boardsWrap.setAttribute("id", "boardsWrap");
@@ -27,15 +28,34 @@ const renderer = {
     this.flipShip = document.createElement("img");
     this.flipShip.src = flipIcon;
     this.flipShip.id = "flipShip";
-    this.wrapper.append(this.boardsWrap, this.startGameBtn);
+    this.infoWrap = document.createElement("div");
+    this.infoWrap.id = "infoWrap";
+    this.infoText1 = document.createElement("span");
+    this.infoText1.classList.add("infoText");
+    this.infoText1.innerText = "- Place your ships by clicking on a cell. ";
+    this.infoText2 = document.createElement("span");
+    this.infoText2.classList.add("infoText");
+    this.infoText2.innerText = "- Rotate ships by clicking the button above. ";
+    this.infoWrap.append(this.infoText1, this.infoText2);
+    this.wrapper.append(this.boardsWrap, this.startGameBtn, this.infoWrap);
     this.boardsWrap.append(this.board1, this.flipShip, this.board2);
     this.allCells = document.getElementsByClassName("player1");
     this.allCellsP2 = document.getElementsByClassName("player2");
     this.startGameBtn.addEventListener("click", () => {
-      this.startGameBtn.style.display = "none";
-      this.flipShip.style.display = "none";
-      this.attack();
+      if (
+        this.gameLoop.player1.board.ships.carrier.placed === true &&
+        this.gameLoop.player1.board.ships.battleship.placed === true &&
+        this.gameLoop.player1.board.ships.destroyer.placed === true &&
+        this.gameLoop.player1.board.ships.submarine.placed === true &&
+        this.gameLoop.player1.board.ships.patrol.placed === true
+      ) {
+        this.startGameBtn.style.display = "none";
+        this.flipShip.style.display = "none";
+        this.infoWrap.style.display = "none";
+        this.attack();
+      }
     });
+
     this.flipShip.addEventListener("click", () => {
       if (this.orientation === "horizontal") {
         this.orientation = "vertical";
@@ -207,13 +227,14 @@ const renderer = {
     this.gameOverSpan.id = "gameOverText";
     this.restartGame = document.createElement("button");
     this.restartGame.innerText = "Play again";
+    this.restartGame.classList.add("restartBtn");
     this.restartGame.addEventListener("click", () => {
       this.gameOverWrap.style.display = "none";
       this.clearPage();
       this.gamePage();
       this.gameLoop.startGame(this.userName.value);
       this.renderBoard(this.gameLoop.player1);
-      this.attack();
+      this.placement();
     });
     document.body.appendChild(this.gameOverWrap);
     this.gameOverWrap.append(this.gameOverSpan, this.restartGame);
