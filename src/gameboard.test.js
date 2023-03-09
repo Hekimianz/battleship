@@ -171,13 +171,6 @@ test("clearShip", () => {
   expect(gb1.board.f[9].owner).toBe(gb1.ships.carrier);
 });
 
-test("moveShip", () => {
-  gb1.placeShip(gb1.ships.carrier, "a", 4, "horizontal");
-  gb1.moveShip("f", 9, "vertical", gb1.ships.carrier);
-  expect(gb1.board.a[4].owner).toBe(null);
-  expect(gb1.board.f[9].owner).toBe(gb1.ships.carrier);
-});
-
 test("placeShip: cant intersect ships", () => {
   gb1.placeShip(gb1.ships.carrier, "d", 6, "horizontal");
   gb1.placeShip(gb1.ships.battleship, "f", 7, "vertical");
@@ -185,4 +178,12 @@ test("placeShip: cant intersect ships", () => {
   expect(gb1.board.f[6].owner).toBe(gb1.ships.carrier);
   expect(gb1.board.f[5].owner).toBe(null);
   expect(gb1.board.f[4].owner).toBe(null);
+  gb1.placeShip(gb1.ships.destroyer, "c", 3, "vertical");
+  gb1.placeShip(gb1.ships.submarine, "b", 4, "horizontal");
+  expect(gb1.board.c[3].owner).toBe(gb1.ships.destroyer);
+  expect(gb1.board.c[4].owner).toBe(gb1.ships.destroyer);
+  expect(gb1.board.c[5].owner).toBe(gb1.ships.destroyer);
+  expect(gb1.board.b[4].owner).toBe(null);
+  expect(gb1.board.c[4].owner).toBe(gb1.ships.destroyer);
+  expect(gb1.board.d[4].owner).toBe(null);
 });

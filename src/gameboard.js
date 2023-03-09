@@ -136,20 +136,32 @@ function gameboard() {
     allSunk: false,
     placeShip(ship, col, row, orientation) {
       if (this.board[col][row].owner === null) {
-        // eslint-disable-next-line no-param-reassign
-        ship.placed = true;
         const cols = "abcdefghij";
         // vertical
         if (orientation === "vertical") {
           for (let i = 0; i < ship.length; i += 1) {
-            this.board[col][row].owner = ship;
             // to the top
             if (this.board[col][row - ship.length] !== undefined) {
-              this.board[col][row - i].owner = ship;
-
+              if (this.board[col][row - i].owner === null) {
+                this.board[col][row - i].owner = ship;
+                this.board[col][row].owner = ship;
+                ship.placed = true;
+              } else {
+                ship.placed = false;
+                this.clearShip(ship);
+                break;
+              }
               // to the bottom
             } else if (this.board[col][row + ship.length] !== undefined) {
-              this.board[col][row + i].owner = ship;
+              if (this.board[col][row + i].owner === null) {
+                this.board[col][row + i].owner = ship;
+                this.board[col][row].owner = ship;
+                ship.placed = true;
+              } else {
+                ship.placed = false;
+                this.clearShip(ship);
+                break;
+              }
             }
           }
         }
@@ -159,11 +171,31 @@ function gameboard() {
             const currentIndex = cols.indexOf(col);
             // to the right
             if (cols.charAt(currentIndex + ship.length) !== "") {
-              this.board[cols.charAt(currentIndex + i)][row].owner = ship;
+              if (
+                this.board[cols.charAt(currentIndex + i)][row].owner === null
+              ) {
+                this.board[cols.charAt(currentIndex + i)][row].owner = ship;
+                this.board[col][row].owner = ship;
+                ship.placed = true;
+              } else {
+                ship.placed = false;
+                this.clearShip(ship);
+                break;
+              }
 
               // to the left
             } else if (cols.charAt(currentIndex - ship.length) !== "") {
-              this.board[cols.charAt(currentIndex - i)][row].owner = ship;
+              if (
+                this.board[cols.charAt(currentIndex - i)][row].owner === null
+              ) {
+                this.board[cols.charAt(currentIndex - i)][row].owner = ship;
+                this.board[col][row].owner = ship;
+                ship.placed = true;
+              } else {
+                ship.placed = false;
+                this.clearShip(ship);
+                break;
+              }
             }
           }
         }
@@ -178,10 +210,7 @@ function gameboard() {
         }
       }
     },
-    moveShip(col, row, orientation, ship) {
-      this.clearShip(ship);
-      this.placeShip(ship, col, row, orientation);
-    },
+
     recieveAttack(col, row) {
       const attackedCell = this.board[col][row];
       if (attackedCell.owner !== null) {
