@@ -160,6 +160,7 @@ function gameboard() {
             // to the right
             if (cols.charAt(currentIndex + ship.length) !== "") {
               this.board[cols.charAt(currentIndex + i)][row].owner = ship;
+
               // to the left
             } else if (cols.charAt(currentIndex - ship.length) !== "") {
               this.board[cols.charAt(currentIndex - i)][row].owner = ship;

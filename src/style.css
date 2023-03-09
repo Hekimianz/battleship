@@ -252,6 +252,50 @@ h1 {
   font-size: 1.5em;
 }
 
-#startGameBtn {
+#startGameBtn,
+#flipShip {
   margin-left: 27px;
+  margin-top: 5px;
+}
+
+#startGameBtn {
+  background-color: initial;
+  background-image: linear-gradient(-180deg, #61c611, #346b06);
+  border-radius: 5px;
+  box-shadow: rgba(0, 0, 0, 0.1) 0 2px 4px;
+  color: #ffffff;
+  cursor: pointer;
+  display: inline-block;
+  height: 22px;
+  outline: 0;
+  padding: 0 20px;
+  pointer-events: auto;
+  position: relative;
+  text-align: center;
+  width: 130px;
+  border: 0;
+  font-size: 1em;
+}
+
+#startGameBtn:hover {
+  background: #346b06;
+}
+
+#flipShip {
+  position: absolute;
+  top: 0;
+  width: 20px;
+  filter: invert(53%) sepia(80%) saturate(463%) hue-rotate(50deg)
+    brightness(103%) contrast(101%);
+  cursor: pointer;
+  transition: 0.3s all;
+}
+
+#flipShip:active,
+#flipShip:hover {
+  transform: rotate(180deg);
+}
+
+#flipShip:active {
+  transition: none;
 }

@@ -177,3 +177,12 @@ test("moveShip", () => {
   expect(gb1.board.a[4].owner).toBe(null);
   expect(gb1.board.f[9].owner).toBe(gb1.ships.carrier);
 });
+
+test("placeShip: cant intersect ships", () => {
+  gb1.placeShip(gb1.ships.carrier, "d", 6, "horizontal");
+  gb1.placeShip(gb1.ships.battleship, "f", 7, "vertical");
+  expect(gb1.board.f[7].owner).toBe(null);
+  expect(gb1.board.f[6].owner).toBe(gb1.ships.carrier);
+  expect(gb1.board.f[5].owner).toBe(null);
+  expect(gb1.board.f[4].owner).toBe(null);
+});

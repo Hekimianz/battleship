@@ -1,6 +1,7 @@
 /* eslint-disable guard-for-in */
 /* eslint-disable no-restricted-syntax */
 import logoImg from "./assets/logo.svg";
+import flipIcon from "./assets/flip.svg";
 import game from "./game";
 
 const renderer = {
@@ -23,14 +24,16 @@ const renderer = {
     this.startGameBtn.id = "startGameBtn";
     this.createGrid(this.board1);
     this.createGrid(this.board2, 2);
-    this.flipShip = document.createElement("button");
-    this.flipShip.innerText = "Flip Ship";
+    this.flipShip = document.createElement("img");
+    this.flipShip.src = flipIcon;
+    this.flipShip.id = "flipShip";
     this.wrapper.append(this.boardsWrap, this.startGameBtn);
     this.boardsWrap.append(this.board1, this.flipShip, this.board2);
     this.allCells = document.getElementsByClassName("player1");
     this.allCellsP2 = document.getElementsByClassName("player2");
     this.startGameBtn.addEventListener("click", () => {
       this.startGameBtn.style.display = "none";
+      this.flipShip.style.display = "none";
       this.attack();
     });
     this.flipShip.addEventListener("click", () => {
@@ -95,14 +98,17 @@ const renderer = {
     this.playBtn = document.createElement("button");
     this.playBtn.innerText = "Play";
     this.playBtn.classList.add("playBtn");
-    this.playBtn.addEventListener("click", () => {
-      this.clearPage();
-      this.gamePage();
 
-      this.gameLoop.startGame(this.userName.value);
-      this.renderBoard(this.gameLoop.player1);
-      this.placement();
+    this.playBtn.addEventListener("click", () => {
+      if (this.userName.value !== "") {
+        this.clearPage();
+        this.gamePage();
+        this.gameLoop.startGame(this.userName.value);
+        this.renderBoard(this.gameLoop.player1);
+        this.placement();
+      }
     });
+
     this.wrapper.append(this.logo, this.header, this.userName, this.playBtn);
   },
   clearPage() {
@@ -259,7 +265,10 @@ const renderer = {
             row,
             this.orientation
           );
+        } else {
+          console.log(this.gameLoop.player1.board.board);
         }
+
         this.renderBoard(this.gameLoop.player1);
       });
     }
